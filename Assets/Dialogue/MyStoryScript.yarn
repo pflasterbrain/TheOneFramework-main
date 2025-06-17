@@ -1,6 +1,6 @@
 ﻿title: Start
 ---
-<<log "Hello world">>
+Where am I? What is this place?
 ===
 
 title: bench
@@ -40,14 +40,35 @@ Is this my toy too?! I love it here!
 
 title: food
 ---
-This food is huge! Why isn't it mine?... 
+This could have been all mine
 ===
 
 title: wall
 ---
 These bars are only holding me back from eating faster! It makes eating a bit more fun though...
+===
 
-title: tree
+title: Tree
 ---
-I love trees, I want to get to the top now.
+How high is this tree? I want to watch the world from atop.
+===
+
+title: bed
+---
+My bed is huge. I should sleep more...
+===
+
+title: pillow
+---
+Is this my pillow? I'm getting sleepy already...
+===
+
+title: junk
+---
+Sasha never lets me eat from that... If only they tried for once, they would do it too!
+===
+
+title: paper
+---
+I think this path will lead me to the top. I'm dying to see what's there! I hope I can see the whole world from there. 
 ===
