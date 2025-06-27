@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/art assets/env assets/pen.fbx.meta
-guid: 49e5f308b378d0043aa7d5b373479d30
-========
-guid: 3a75ca7cc461e164ebb0ba74b0894fa3
->>>>>>>> d99dc7a (Make new changes):Assets/cat_for_unity_v02 1.fbx.meta
+guid: 781d7709a6bd38242992651c82c332f4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []

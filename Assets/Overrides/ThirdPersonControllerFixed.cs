@@ -101,7 +101,10 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
-        private Animator _animator;
+        public Animator _animator;
+        private bool isWalking;
+        private bool isRunning;
+        private bool isJumping;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
@@ -136,7 +139,7 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
-            _hasAnimator = TryGetComponent(out _animator);
+            // _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
@@ -154,11 +157,20 @@ namespace StarterAssets
 
         private void Update()
         {
-            _hasAnimator = TryGetComponent(out _animator);
+            // _hasAnimator = TryGetComponent(out _animator);
+
+            if (!isWalking && !isJumping && !isRunning) { ResetAnimation(); }
 
             JumpAndGravity();
             GroundedCheck();
             Move();
+        }
+
+        private void ResetAnimation()
+        {
+            _animator.SetBool("isWalking", false);
+            _animator.SetBool("isRunning", false);
+            _animator.SetBool("isJumping", false);
         }
 
         private void LateUpdate()
@@ -216,6 +228,11 @@ namespace StarterAssets
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            if (!_input.sprint)
+            {
+                isRunning = false;
+                _animator.SetBool("isRunning", false);
+            }
 
             // // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -257,6 +274,14 @@ namespace StarterAssets
             // if there is a move input rotate player when the player is moving
             if (_input.move != Vector2.zero)
             {
+                isWalking = true;
+                if (_input.sprint)
+                {
+                    isRunning = true;
+                    _animator.SetBool("isRunning", true);
+                }
+                
+                _animator.SetBool("isWalking", true);
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
@@ -264,6 +289,9 @@ namespace StarterAssets
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            } else {
+                isWalking = false;
+                _animator.SetBool("isWalking", false);
             }
 
 
@@ -276,6 +304,7 @@ namespace StarterAssets
             // update animator if using character
             if (_hasAnimator)
             {
+                
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
@@ -285,6 +314,8 @@ namespace StarterAssets
         {
             if (Grounded)
             {
+                isJumping = false;
+                _animator.SetBool("isJumping", false);
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
 
@@ -322,6 +353,8 @@ namespace StarterAssets
             }
             else
             {
+                isJumping = true;
+                _animator.SetBool("isJumping", true);
                 // reset the jump timeout timer
                 _jumpTimeoutDelta = JumpTimeout;
 
